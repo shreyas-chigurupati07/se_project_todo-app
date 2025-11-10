@@ -65,11 +65,9 @@ class FormValidator {
     this._inputList.forEach((inputElement) => {
       this._hideInputError(inputElement);
     });
-    this._buttonElement.classList.add(this._config.inactiveButtonClass);
-    this._buttonElement.disabled = true;
+    this.toggleButtonState();
   }
   enableValidation() {
-    this._formElement = document.querySelector(this._config.formSelector);
     this._formElement.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
