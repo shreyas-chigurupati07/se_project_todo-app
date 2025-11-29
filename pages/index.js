@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
+import Section from "../utils/section.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
@@ -24,6 +25,17 @@ const generateTodo = (data) => {
   const todoElement = todo.getView();
   return todoElement;
 };
+const section = new Section({
+  items: initialTodos,
+  renderer: (item) => {
+    const todo = generateTodo(item);
+    section.addItem(todo);
+  },
+  containerSelector: ".todos__list",
+});
+
+//Call section instacne's renderItems method
+section.renderItems();
 
 addTodoButton.addEventListener("click", () => {
   openModal(addTodoPopup);
@@ -45,15 +57,15 @@ addTodoForm.addEventListener("submit", (evt) => {
   const id = uuidv4();
   const values = { name, date, id };
   const todo = generateTodo(values);
-  todosList.append(todo);
+  section.addItem(todo);
 
   formValidty.resetValidation();
   closeModal(addTodoPopup);
 });
 
-initialTodos.forEach((item) => {
-  const todo = generateTodo(item);
-  todosList.append(todo);
-});
+// initialTodos.forEach((item) => {
+//   const todo = generateTodo(item);
+//   todosList.append(todo); //Use addItme method instead of this line
+// });
 
 formValidty.enableValidation();
